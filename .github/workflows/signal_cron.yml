@@ -18,13 +18,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
           cache: 'pip'
 
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install --pre -r requirements.txt
 
       - name: Restore Signal State Cache
         uses: actions/cache@v4
@@ -49,4 +49,5 @@ jobs:
         with:
           name: run-log-${{ github.run_id }}
           path: logs/*.log
+          if-no-files-found: ignore
           retention-days: 7
