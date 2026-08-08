@@ -1,0 +1,52 @@
+name: Crypto Signal Scanner
+
+on:
+  schedule:
+    # Runs every 15 minutes (GitHub's minimum practical cron granularity)
+    - cron: '*/15 * * * *'
+  workflow_dispatch:  # allows manual trigger from the Actions tab
+
+jobs:
+  scan-market:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5   # fail fast if a run hangs
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore Signal State Cache
+        uses: actions/cache@v4
+        with:
+          path: .state/
+          key: signal-state-${{ github.run_id }}
+          restore-keys: |
+            signal-state-
+
+      - name: Execute Signal Engine
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ACCOUNT_EQUITY: ${{ secrets.ACCOUNT_EQUITY }}
+          RISK_PER_TRADE_PCT: ${{ secrets.RISK_PER_TRADE_PCT }}
+        run: |
+          python src/main.py
+
+      - name: Upload Run Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: run-log-${{ github.run_id }}
+          path: logs/*.log
+          retention-days: 7
