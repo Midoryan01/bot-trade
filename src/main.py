@@ -18,6 +18,7 @@ from src import fetcher
 from src.indicators import trend, momentum, volatility, volume
 from src import risk_manager, state_store, strategy, telegram_bot
 from src.logger import configure
+from src.strategy import SignalResult
 
 configure()
 log = logging.getLogger(__name__)
