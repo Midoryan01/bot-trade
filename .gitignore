@@ -1,0 +1,19 @@
+# Secrets & local config
+.env
+.env.local
+*.env
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Logs & dynamic state
+logs/
+.state/
+
+# IDE & system files
+.vscode/
+.idea/
+.DS_Store
