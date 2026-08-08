@@ -1,6 +1,7 @@
 # Secrets & local config
 .env
 .env.local
+.env.example
 *.env
 
 # Python bytecode & cache
