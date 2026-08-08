@@ -38,8 +38,8 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          ACCOUNT_EQUITY: ${{ secrets.ACCOUNT_EQUITY }}
-          RISK_PER_TRADE_PCT: ${{ secrets.RISK_PER_TRADE_PCT }}
+          ACCOUNT_EQUITY: ${{ secrets.ACCOUNT_EQUITY || '10000' }}
+          RISK_PER_TRADE_PCT: ${{ secrets.RISK_PER_TRADE_PCT || '0.01' }}
         run: |
           python src/main.py
 

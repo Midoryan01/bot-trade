@@ -1,1 +1,1 @@
-from . import trend, momentum, volatility, volume  # noqa: F401
+from . import momentum, trend, volatility, volume  # noqa: F401

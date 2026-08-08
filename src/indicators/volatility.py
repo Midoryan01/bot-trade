@@ -16,10 +16,10 @@ def add_bollinger(df: pd.DataFrame, period: int = 20, std: float = 2.0) -> pd.Da
         # Column names vary by pandas-ta version (e.g. BBU_20_2.0 vs BBU_20_2.0_2.0)
         # Use startswith discovery to stay version-agnostic.
         cols = bb.columns.tolist()
-        df["bb_upper"] = bb[[c for c in cols if c.startswith("BBU_")][0]]
-        df["bb_mid"]   = bb[[c for c in cols if c.startswith("BBM_")][0]]
-        df["bb_lower"] = bb[[c for c in cols if c.startswith("BBL_")][0]]
-        df["bb_width"] = bb[[c for c in cols if c.startswith("BBB_")][0]]
+        df["bb_upper"] = bb[next(c for c in cols if c.startswith("BBU_"))]
+        df["bb_mid"]   = bb[next(c for c in cols if c.startswith("BBM_"))]
+        df["bb_lower"] = bb[next(c for c in cols if c.startswith("BBL_"))]
+        df["bb_width"] = bb[next(c for c in cols if c.startswith("BBB_"))]
     return df
 
 
@@ -27,8 +27,8 @@ def add_keltner(df: pd.DataFrame, period: int = 20, atr_mult: float = 1.5) -> pd
     kc = ta.kc(df["high"], df["low"], df["close"], length=period, scalar=atr_mult)
     if kc is not None:
         cols = kc.columns.tolist()
-        df["kc_upper"] = kc[[c for c in cols if c.startswith("KCUe_")][0]]
-        df["kc_lower"] = kc[[c for c in cols if c.startswith("KCLe_")][0]]
+        df["kc_upper"] = kc[next(c for c in cols if c.startswith("KCUe_"))]
+        df["kc_lower"] = kc[next(c for c in cols if c.startswith("KCLe_"))]
     return df
 
 

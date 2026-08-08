@@ -8,15 +8,15 @@ from __future__ import annotations
 # Bootstrap: add project root so `config.*` and `src.*` resolve when run as a script.
 import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import logging
 import time
 
 from config.settings import settings
-from src import fetcher
-from src.indicators import trend, momentum, volatility, volume
-from src import risk_manager, state_store, strategy, telegram_bot
+from src import fetcher, risk_manager, state_store, strategy, telegram_bot
+from src.indicators import momentum, trend, volatility, volume
 from src.logger import configure
 from src.strategy import SignalResult
 
@@ -48,7 +48,7 @@ def process_pair(symbol: str) -> SignalResult | None:
     try:
         df_trigger = fetcher.fetch_ohlcv(symbol, settings.trigger_timeframe)
         df_primary = fetcher.fetch_ohlcv(symbol, settings.primary_timeframe)
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         log.warning("Fetch failed for %s: %s — skipping cycle", symbol, exc)
         return None
 
@@ -115,8 +115,8 @@ def main() -> None:
             res = process_pair(symbol)
             if res:
                 results.append((symbol, res))
-        except Exception as exc:
-            log.error("Unhandled error for %s: %s", symbol, exc, exc_info=True)
+        except Exception:
+            log.exception("Unhandled error for %s", symbol)
 
     # Top Gainer Radar (Koin dengan probabilitas gainer tertinggi >= 50%)
     high_potential = [(sym, sig) for sym, sig in results if sig.gainer_score >= 0.50]

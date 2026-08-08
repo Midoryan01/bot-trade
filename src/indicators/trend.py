@@ -26,6 +26,6 @@ def add_supertrend(df: pd.DataFrame, period: int = 10, multiplier: float = 3.0) 
     """Add supertrend direction column: 1 = bullish, -1 = bearish."""
     st = ta.supertrend(df["high"], df["low"], df["close"], length=period, multiplier=multiplier)
     if st is not None:
-        col = [c for c in st.columns if c.startswith("SUPERTd")][0]
+        col = next(c for c in st.columns if c.startswith("SUPERTd"))
         df["supertrend_dir"] = st[col]
     return df

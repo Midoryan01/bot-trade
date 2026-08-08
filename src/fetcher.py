@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+
 import ccxt
 import pandas as pd
 
@@ -36,7 +37,7 @@ def fetch_ohlcv(symbol: str, timeframe: str, limit: int = 200) -> pd.DataFrame:
             # Drop candle terakhir yang belum closed
             return df.iloc[:-1]
 
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             last_exception = exc
             log.warning("Fetch via %s gagal (%s), mencoba exchange berikutnya...", exchange_name, str(exc)[:60])
 

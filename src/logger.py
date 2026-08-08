@@ -1,6 +1,5 @@
 """Logging bootstrap — call once from main.py; all modules use getLogger."""
 import logging
-import os
 from pathlib import Path
 
 

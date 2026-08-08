@@ -1,7 +1,9 @@
 """Config — only the fields a trader actually changes."""
 from __future__ import annotations
 
-from pydantic import model_validator
+from typing import Any
+
+from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings
 
 
@@ -28,6 +30,13 @@ class Settings(BaseSettings):
     tp_rrr: list[float] = []
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
+
+    @field_validator("account_equity", "risk_per_trade_pct", "signal_threshold", mode="before")
+    @classmethod
+    def _empty_str_to_none(cls, v: Any) -> Any:
+        if isinstance(v, str) and not v.strip():
+            return None
+        return v
 
     @model_validator(mode="after")
     def _parse_lists(self) -> "Settings":

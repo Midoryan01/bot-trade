@@ -6,8 +6,8 @@ ponytail: JSON file — upgrade to SQLite only if concurrent writes are needed.
 from __future__ import annotations
 
 import json
-from pathlib import Path
 from datetime import datetime, timezone
+from pathlib import Path
 
 from config.settings import settings
 

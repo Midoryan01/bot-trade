@@ -24,8 +24,8 @@ def add_stochrsi(
 ) -> pd.DataFrame:
     srsi = ta.stochrsi(df["close"], length=period, rsi_length=period, k=smooth_k, d=smooth_d)
     if srsi is not None:
-        k_col = [c for c in srsi.columns if "STOCHRSIk" in c][0]
-        d_col = [c for c in srsi.columns if "STOCHRSId" in c][0]
+        k_col = next(c for c in srsi.columns if "STOCHRSIk" in c)
+        d_col = next(c for c in srsi.columns if "STOCHRSId" in c)
         df["stochrsi_k"] = srsi[k_col]
         df["stochrsi_d"] = srsi[d_col]
     return df
